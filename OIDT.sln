@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1", "Lab1\Lab1.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportRecords", "ImportRecords\ImportRecords.csproj", "{0A1CCA0F-7D6C-4DA2-B988-8BD7025AA999}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{AB5C43D7-3386-4E06-B55D-C655CDEF4305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{AB5C43D7-3386-4E06-B55D-C655CDEF4305}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

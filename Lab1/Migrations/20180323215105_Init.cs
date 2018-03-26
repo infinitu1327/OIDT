@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace Lab1.Migrations
 {
@@ -10,11 +9,12 @@ namespace Lab1.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Parameters",
-                columns: table => new
+                "Parameters",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     Age = table.Column<int>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
@@ -30,17 +30,15 @@ namespace Lab1.Migrations
                     Time = table.Column<int>(nullable: true),
                     Win = table.Column<bool>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parameters", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Parameters", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
+                "Events",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(nullable: false),
                     EventId = table.Column<int>(nullable: false),
                     ParametersId = table.Column<int>(nullable: true),
@@ -50,26 +48,26 @@ namespace Lab1.Migrations
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Parameters_ParametersId",
-                        column: x => x.ParametersId,
-                        principalTable: "Parameters",
-                        principalColumn: "Id",
+                        "FK_Events_Parameters_ParametersId",
+                        x => x.ParametersId,
+                        "Parameters",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_ParametersId",
-                table: "Events",
-                column: "ParametersId");
+                "IX_Events_ParametersId",
+                "Events",
+                "ParametersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Events");
+                "Events");
 
             migrationBuilder.DropTable(
-                name: "Parameters");
+                "Parameters");
         }
     }
 }
