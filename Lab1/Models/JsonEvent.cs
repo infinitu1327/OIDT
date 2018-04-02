@@ -16,7 +16,7 @@ namespace Models
 
         public override string ToString()
         {
-            return $"{Id},{Date},{EventId},{Parameters.Id},{Udid}";
+            return $"{Id},{Date},{Parameters.Id},{Udid}";
         }
     }
 }
