@@ -1,8 +1,14 @@
-﻿namespace Models
+﻿using Models.Parameters;
+
+namespace ImportRecords.Models.Parameters
 {
-    public class FirstLaunchParameters
+    public class FirstLaunchParameter : Parameter
     {
-        public FirstLaunchParameters(JsonParameters parameters)
+        public FirstLaunchParameter()
+        {
+        }
+
+        public FirstLaunchParameter(JsonParameters parameters)
         {
             Id = parameters.Id;
             Gender = parameters.Gender;
@@ -10,7 +16,6 @@
             Country = parameters.Country;
         }
 
-        public int Id { get; set; }
         public int Age { get; set; }
         public string Country { get; set; }
         public string Gender { get; set; }

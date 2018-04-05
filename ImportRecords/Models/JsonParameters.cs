@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace ImportRecords.Models
 {
     public class JsonParameters
     {

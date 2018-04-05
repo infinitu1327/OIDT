@@ -1,87 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Models;
-using Newtonsoft.Json;
+using ConsoleTables;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lab1
 {
     public class Program
     {
-        private static async Task Main(string[] args)
+        public static async Task Main()
         {
-            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+            using (var context = new AppDbContext())
+            {
+                var table = new ConsoleTable("Date", "Rate");
 
-            await JsonsToCsvs();
+                var rates = await GetNewUsers(context);
+
+                foreach (var rate in rates) table.AddRow(rate.Key.ToShortDateString(), rate.Value);
+
+                table.Write();
+            }
         }
 
-        private static async Task JsonsToCsvs()
+        [Obsolete("Takes a very long time to execute")]
+        public static async Task<Dictionary<DateTime, int>> GetDAU(AppDbContext context)
         {
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            };
+            return await context.FirstLaunchEvents
+                .AsNoTracking()
+                .GroupBy(gr => gr.Date)
+                .ToDictionaryAsync(gr => gr.Key, gr => gr.Select(e => e.Udid).Distinct().Count() * 10);
+        }
 
-            var jsons = Directory
-                .EnumerateFiles(Directory.GetCurrentDirectory())
-                .AsParallel()
-                .Where(file => Path.GetExtension(file) == ".json" && !file.Contains("Lab1"));
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> GetNewUsers(AppDbContext context)
+        {
+            var previousCount = 0;
 
-            var countOfEvents = 0;
-
-            for (var i = 0; ; i++)
-            {
-                var batch = jsons.Skip(i * 20).Take(20);
-
-                if (!batch.Any()) break;
-
-                var eventsTasks = batch
-                    .Select(async file => await File.ReadAllTextAsync(file))
-                    .Select(async file => JsonConvert.DeserializeObject<IEnumerable<JsonEvent>>(await file, settings));
-
-                var eventsIEnumerables = await Task.WhenAll(eventsTasks);
-                var events = eventsIEnumerables
-                    .SelectMany(ienumerable => ienumerable);
-
-                foreach (var e in events)
+            return await context.FirstLaunchEvents
+                .AsNoTracking()
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key, gr =>
                 {
-                    e.Id = countOfEvents;
-                    e.Parameters.Id = countOfEvents;
-                    countOfEvents++;
-                }
+                    var count = gr.Select(e => e.Udid).Distinct().Count() * 10;
+                    var result = count - previousCount;
+                    previousCount = count;
+                    return result;
+                });
+        }
 
-                await File.AppendAllLinesAsync("GameLaunchParameters.csv",
-                    events.Where(e => e.EventId == 1).Select(e => new GameLaunchParameters(e.Parameters).ToString()));
+        private static async Task<Dictionary<DateTime, decimal>> GetRevenue(AppDbContext context)
+        {
+            return await context.CurrencyPurchaseEvents
+                .Include(e => e.Parameters)
+                .AsNoTracking()
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key, gr => gr.Sum(g => g.Parameters.Price) * 10);
+        }
 
-                await File.AppendAllLinesAsync("FirstLaunchParameters.csv",
-                    events.Where(e => e.EventId == 2).Select(e => new FirstLaunchParameters(e.Parameters).ToString()));
+        private static async Task<int> GetUniqueUsers(AppDbContext context)
+        {
+            return await context.GameLaunchEvents
+                       .AsNoTracking()
+                       .Select(e => e.Udid)
+                       .Distinct()
+                       .CountAsync() * 10;
+        }
 
-                await File.AppendAllLinesAsync("StageStartParameters.csv",
-                    events.Where(e => e.EventId == 3).Select(e => new StageStartParameters(e.Parameters).ToString()));
+        private static async Task<Dictionary<DateTime, decimal>> GetCurrencyRate(AppDbContext context)
+        {
+            return await context.CurrencyPurchaseEvents
+                .AsNoTracking()
+                .Include(e => e.Parameters)
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key,
+                    gr => gr.Sum(e => e.Parameters.Price) / gr.Sum(e => e.Parameters.Income));
+        }
 
-                await File.AppendAllLinesAsync("StageEndParameters.csv",
-                    events.Where(e => e.EventId == 4).Select(e => new StageEndParameters(e.Parameters).ToString()));
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> CountOfStartedStages(AppDbContext context)
+        {
+            return await context.StageStartEvents
+                .AsNoTracking()
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(e => e.Key, e => e.Count() * 10);
+        }
 
-                await File.AppendAllLinesAsync("InGamePurchaseParameters.csv",
-                    events.Where(e => e.EventId == 5)
-                        .Select(e => new InGamePurchaseParameters(e.Parameters).ToString()));
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> CountOfEndedStages(AppDbContext context)
+        {
+            return await context.StageEndEvents
+                .AsNoTracking()
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(e => e.Key, e => e.Count() * 10);
+        }
 
-                await File.AppendAllLinesAsync("CurrencyPurchaseParameters.csv",
-                    events.Where(e => e.EventId == 6)
-                        .Select(e => new CurrencyPurchaseParameters(e.Parameters).ToString()));
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> CountOfWins(AppDbContext context)
+        {
+            return await context.StageEndEvents
+                .AsNoTracking()
+                .Include(e => e.Parameters)
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key, gr => gr.Count(e => e.Parameters.Win) * 10);
+        }
 
-                await File.AppendAllLinesAsync("GameLaunchEvents.csv", events.Where(e => e.EventId == 1).Select(e => e.ToString()));
-                await File.AppendAllLinesAsync("FirstLaunchEvents.csv", events.Where(e => e.EventId == 2).Select(e => e.ToString()));
-                await File.AppendAllLinesAsync("StageStartEvents.csv", events.Where(e => e.EventId == 3).Select(e => e.ToString()));
-                await File.AppendAllLinesAsync("StageEndEvents.csv", events.Where(e => e.EventId == 4).Select(e => e.ToString()));
-                await File.AppendAllLinesAsync("InGamePurchaseEvents.csv", events.Where(e => e.EventId == 5).Select(e => e.ToString()));
-                await File.AppendAllLinesAsync("CurrencyPurchaseEvents.csv", events.Where(e => e.EventId == 6).Select(e => e.ToString()));
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> EarnedCurrencyAmount(AppDbContext context)
+        {
+            return await context.StageEndEvents
+                .AsNoTracking()
+                .Include(e => e.Parameters)
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key,
+                    gr => gr.Where(e => e.Parameters.Income.HasValue).Sum(e => e.Parameters.Income.Value) * 10);
+        }
 
-                Console.WriteLine(countOfEvents);
-            }
+        [Obsolete("Takes a very long time to execute")]
+        private static async Task<Dictionary<DateTime, int>> EarnedCurrencyAmountInUSD(AppDbContext context)
+        {
+            return await context.StageEndEvents
+                .AsNoTracking()
+                .Include(e => e.Parameters)
+                .GroupBy(e => e.Date)
+                .ToDictionaryAsync(gr => gr.Key,
+                    gr => gr.Where(e => e.Parameters.Income.HasValue).Sum(e => e.Parameters.Income.Value) * 10);
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿CREATE SCHEMA parameters
+﻿CREATE SCHEMA "Parameters"
   AUTHORIZATION postgres;
 
-CREATE SCHEMA events
+CREATE SCHEMA "Events"
   AUTHORIZATION postgres;
 
-CREATE TABLE parameters."CurrencyPurchase"
+CREATE SCHEMA "Gender"
+  AUTHORIZATION postgres;
+
+CREATE TABLE "Parameters"."CurrencyPurchase"
 (
   "Id" integer PRIMARY KEY,
   "Income" integer NOT NULL,
@@ -15,7 +18,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE events."CurrencyPurchase"
+CREATE TABLE "Events"."CurrencyPurchase"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -26,7 +29,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE parameters."FirstLaunch"
+CREATE TABLE "Parameters"."FirstLaunch"
 (
   "Id" integer PRIMARY KEY,
   "Age" integer NOT NULL,
@@ -37,7 +40,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE events."FirstLaunch"
+CREATE TABLE "Events"."FirstLaunch"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -47,7 +50,7 @@ CREATE TABLE events."FirstLaunch"
 WITH (
   OIDS=FALSE
 );
-CREATE TABLE events."GameLaunch"
+CREATE TABLE "Events"."GameLaunch"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -58,7 +61,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE parameters."InGamePurchase"
+CREATE TABLE "Parameters"."InGamePurchase"
 (
   "Id" integer PRIMARY KEY,
   "Item" text,
@@ -68,7 +71,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE events."InGamePurchase"
+CREATE TABLE "Events"."InGamePurchase"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -79,7 +82,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE parameters."StageEnd"
+CREATE TABLE "Parameters"."StageEnd"
 (
   "Id" integer PRIMARY KEY,
   "Income" integer,
@@ -91,7 +94,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE events."StageEnd"
+CREATE TABLE "Events"."StageEnd"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -102,7 +105,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE parameters."StageStart"
+CREATE TABLE "Parameters"."StageStart"
 (
   "Id" integer PRIMARY KEY,
   "Stage" integer NOT NULL
@@ -111,7 +114,7 @@ WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE events."StageStart"
+CREATE TABLE "Events"."StageStart"
 (
   "Id" integer PRIMARY KEY,
   "Date" timestamp without time zone NOT NULL,
@@ -122,27 +125,25 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE parameters."StageStart"
+ALTER TABLE "Parameters"."StageStart"
   OWNER TO postgres;
-ALTER TABLE parameters."CurrencyPurchase"
+ALTER TABLE "Parameters"."CurrencyPurchase"
   OWNER TO postgres;
-ALTER TABLE parameters."FirstLaunch"
+ALTER TABLE "Parameters"."FirstLaunch"
   OWNER TO postgres;
-ALTER TABLE parameters."GameLaunch"
+ALTER TABLE "Parameters"."InGamePurchase"
   OWNER TO postgres;
-ALTER TABLE parameters."InGamePurchase"
+ALTER TABLE "Parameters"."StageEnd"
   OWNER TO postgres;
-ALTER TABLE parameters."StageEnd"
+ALTER TABLE "Events"."StageStart"
   OWNER TO postgres;
-ALTER TABLE events."StageStart"
+ALTER TABLE "Events"."CurrencyPurchase"
   OWNER TO postgres;
-ALTER TABLE events."CurrencyPurchase"
+ALTER TABLE "Events"."FirstLaunch"
   OWNER TO postgres;
-ALTER TABLE events."FirstLaunch"
+ALTER TABLE "Events"."GameLaunch"
   OWNER TO postgres;
-ALTER TABLE events."GameLaunch"
+ALTER TABLE "Events"."InGamePurchase"
   OWNER TO postgres;
-ALTER TABLE events."InGamePurchase"
-  OWNER TO postgres;
-ALTER TABLE events."StageEnd"
+ALTER TABLE "Events"."StageEnd"
 OWNER TO postgres;

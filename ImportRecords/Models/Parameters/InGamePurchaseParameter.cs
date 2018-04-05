@@ -1,15 +1,20 @@
-﻿namespace Models
+﻿using Models.Parameters;
+
+namespace ImportRecords.Models.Parameters
 {
-    public class InGamePurchaseParameters
+    public class InGamePurchaseParameter : Parameter
     {
-        public InGamePurchaseParameters(JsonParameters parameters)
+        public InGamePurchaseParameter()
+        {
+        }
+
+        public InGamePurchaseParameter(JsonParameters parameters)
         {
             Id = parameters.Id;
             Item = parameters.Item;
             Price = (int) parameters.Price.Value;
         }
 
-        public int Id { get; set; }
         public string Item { get; set; }
         public int Price { get; set; }
 

@@ -1,8 +1,14 @@
-﻿namespace Models
+﻿using Models.Parameters;
+
+namespace ImportRecords.Models.Parameters
 {
-    public class CurrencyPurchaseParameters
+    public class CurrencyPurchaseParameter : Parameter
     {
-        public CurrencyPurchaseParameters(JsonParameters parameters)
+        public CurrencyPurchaseParameter()
+        {
+        }
+
+        public CurrencyPurchaseParameter(JsonParameters parameters)
         {
             Id = parameters.Id;
             Name = parameters.Name;
@@ -10,7 +16,6 @@
             Income = parameters.Income.Value;
         }
 
-        public int Id { get; set; }
         public int Income { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }

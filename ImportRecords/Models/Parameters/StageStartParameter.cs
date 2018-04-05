@@ -1,14 +1,17 @@
-﻿namespace Models
+﻿namespace ImportRecords.Models.Parameters
 {
-    public class StageStartParameters
+    public class StageStartParameter : Parameter
     {
-        public StageStartParameters(JsonParameters parameters)
+        public StageStartParameter()
+        {
+        }
+
+        public StageStartParameter(JsonParameters parameters)
         {
             Id = parameters.Id;
             Stage = parameters.Stage.Value;
         }
 
-        public int Id { get; set; }
         public int Stage { get; set; }
 
         public override string ToString()

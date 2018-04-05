@@ -1,8 +1,12 @@
-﻿namespace Models
+﻿namespace ImportRecords.Models.Parameters
 {
-    public class StageEndParameters
+    public class StageEndParameter : Parameter
     {
-        public StageEndParameters(JsonParameters parameters)
+        public StageEndParameter()
+        {
+        }
+
+        public StageEndParameter(JsonParameters parameters)
         {
             Id = parameters.Id;
             Stage = parameters.Stage.Value;
@@ -11,7 +15,6 @@
             Income = parameters.Income;
         }
 
-        public int Id { get; set; }
         public int? Income { get; set; }
         public int Stage { get; set; }
         public int Time { get; set; }

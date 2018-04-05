@@ -1,7 +1,8 @@
 ﻿using System;
+using Models;
 using Newtonsoft.Json;
 
-namespace Models
+namespace ImportRecords.Models
 {
     public class JsonEvent
     {
@@ -16,7 +17,7 @@ namespace Models
 
         public override string ToString()
         {
-            return $"{Id},{Date},{Parameters.Id},{Udid}";
+            return EventId == 1 ? $"{Id},{Date},{Udid}" : $"{Id},{Date},{Parameters.Id},{Udid}";
         }
     }
 }
