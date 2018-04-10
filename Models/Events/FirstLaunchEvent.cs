@@ -4,6 +4,6 @@ namespace Models.Events
 {
     public class FirstLaunchEvent : Event
     {
-        public virtual FirstLaunchParameter Parameters { get; set; }
+        public virtual FirstLaunchParameters Parameters { get; set; }
     }
 }

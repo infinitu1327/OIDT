@@ -4,6 +4,6 @@ namespace Models.Events
 {
     public class InGamePurchaseEvent : Event
     {
-        public virtual InGamePurchaseParameter Parameters { get; set; }
+        public virtual InGamePurchaseParameters Parameters { get; set; }
     }
 }

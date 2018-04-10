@@ -1,11 +1,13 @@
-﻿CREATE VIEW public."CurrencyRate" AS
+﻿CREATE TABLE public.currency_rate AS
 SELECT 
-  "Events"."CurrencyPurchase"."Date", 
-  Sum("Parameters"."CurrencyPurchase"."Price") / Sum("Parameters"."CurrencyPurchase"."Income") as "CurrencyRate"
+  events.currency_purchase.date, 
+  Sum(price) / Sum(income) as rate
 FROM 
-  "Events"."CurrencyPurchase", 
-  "Parameters"."CurrencyPurchase"  
+  events.currency_purchase, 
+  parameters.currency_purchase  
 WHERE 
-  "Events"."CurrencyPurchase"."ParametersId" = "Parameters"."CurrencyPurchase"."Id"
+  parameters_id = parameters.currency_purchase.id
 GROUP BY
-  "Events"."CurrencyPurchase"."Date";
+  events.currency_purchase.date
+ORDER BY
+  date;

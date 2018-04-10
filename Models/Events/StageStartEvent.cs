@@ -4,6 +4,6 @@ namespace Models.Events
 {
     public class StageStartEvent : Event
     {
-        public virtual StageStartParameter Parameters { get; set; }
+        public virtual StageStartParameters Parameters { get; set; }
     }
 }

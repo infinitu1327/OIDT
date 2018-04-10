@@ -1,5 +1,8 @@
 ﻿CREATE TABLE public.mau AS
-SELECT 
+SELECT
+  gender,
   Count(DISTINCT udid) * 10 as count
 FROM 
-  events.first_launch;
+  events.first_launch
+GROUP BY
+  gender

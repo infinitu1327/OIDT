@@ -18,224 +18,286 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
 
-            modelBuilder.Entity("Lab1.Models.Events.CurrencyPurchaseEvent", b =>
+            modelBuilder.Entity("Models.Events.CurrencyPurchaseEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<int?>("ParametersId");
+                b.Property<int>("ParametersId")
+                    .HasColumnName("parameters_id");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_currency_purchase");
 
                 b.HasIndex("ParametersId")
                     .IsUnique();
 
-                b.ToTable("CurrencyPurchaseEvents");
+                b.ToTable("currency_purchase", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.FirstLaunchEvent", b =>
+            modelBuilder.Entity("Models.Events.FirstLaunchEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<int?>("ParametersId");
+                b.Property<int>("ParametersId")
+                    .HasColumnName("parameters_id");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_first_launch");
 
                 b.HasIndex("ParametersId")
                     .IsUnique();
 
-                b.ToTable("FirstLaunchEvents");
+                b.ToTable("first_launch", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.GameLaunchEvent", b =>
+            modelBuilder.Entity("Models.Events.GameLaunchEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_game_launch");
 
-                b.ToTable("GameLaunchEvents");
+                b.ToTable("game_launch", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.InGamePurchaseEvent", b =>
+            modelBuilder.Entity("Models.Events.InGamePurchaseEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<int?>("ParametersId");
+                b.Property<int>("ParametersId")
+                    .HasColumnName("parameters_id");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_in_game_purchase");
 
                 b.HasIndex("ParametersId")
                     .IsUnique();
 
-                b.ToTable("InGamePurchaseEvents");
+                b.ToTable("in_game_purchase", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.StageEndEvent", b =>
+            modelBuilder.Entity("Models.Events.StageEndEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<int?>("ParametersId");
+                b.Property<int>("ParametersId")
+                    .HasColumnName("parameters_id");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_stage_end");
 
                 b.HasIndex("ParametersId")
                     .IsUnique();
 
-                b.ToTable("StageEndEvents");
+                b.ToTable("stage_end", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.StageStartEvent", b =>
+            modelBuilder.Entity("Models.Events.StageStartEvent", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<DateTime>("Date");
+                b.Property<DateTime>("Date")
+                    .HasColumnName("date");
 
-                b.Property<int?>("ParametersId");
+                b.Property<int>("ParametersId")
+                    .HasColumnName("parameters_id");
 
-                b.Property<string>("Udid");
+                b.Property<string>("Udid")
+                    .HasColumnName("udid");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_stage_start");
 
                 b.HasIndex("ParametersId")
                     .IsUnique();
 
-                b.ToTable("StageStartEvents");
+                b.ToTable("stage_start", "events");
             });
 
-            modelBuilder.Entity("Lab1.Models.Parameters.CurrencyPurchaseParameter", b =>
+            modelBuilder.Entity("Models.Parameters.CurrencyPurchaseParameters", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<int>("Income");
+                b.Property<int>("Income")
+                    .HasColumnName("income");
 
-                b.Property<string>("Name");
+                b.Property<string>("Name")
+                    .HasColumnName("name");
 
-                b.Property<decimal>("Price");
+                b.Property<decimal>("Price")
+                    .HasColumnName("price");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_currency_purchase");
 
-                b.ToTable("CurrencyPurchaseParameters");
+                b.ToTable("currency_purchase", "parameters");
             });
 
-            modelBuilder.Entity("Lab1.Models.Parameters.FirstLaunchParameter", b =>
+            modelBuilder.Entity("Models.Parameters.FirstLaunchParameters", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<int>("Age");
+                b.Property<int>("Age")
+                    .HasColumnName("age");
 
-                b.Property<string>("Country");
+                b.Property<string>("Country")
+                    .HasColumnName("country");
 
-                b.Property<string>("Gender");
+                b.Property<string>("Gender")
+                    .HasColumnName("gender");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_first_launch");
 
-                b.ToTable("FirstLaunchParameters");
+                b.ToTable("first_launch", "parameters");
             });
 
-            modelBuilder.Entity("Lab1.Models.Parameters.InGamePurchaseParameter", b =>
+            modelBuilder.Entity("Models.Parameters.InGamePurchaseParameters", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<string>("Item");
+                b.Property<string>("Item")
+                    .HasColumnName("item");
 
-                b.Property<int>("Price");
+                b.Property<int>("Price")
+                    .HasColumnName("price");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_in_game_purchase");
 
-                b.ToTable("InGamePurchaseParameters");
+                b.ToTable("in_game_purchase", "parameters");
             });
 
-            modelBuilder.Entity("Lab1.Models.Parameters.StageEndParameter", b =>
+            modelBuilder.Entity("Models.Parameters.StageEndParameters", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<int?>("Income");
+                b.Property<int?>("Income")
+                    .HasColumnName("income");
 
-                b.Property<int>("Stage");
+                b.Property<int>("Stage")
+                    .HasColumnName("stage");
 
-                b.Property<int>("Time");
+                b.Property<int>("Time")
+                    .HasColumnName("time");
 
-                b.Property<bool>("Win");
+                b.Property<bool>("Win")
+                    .HasColumnName("win");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_stage_end");
 
-                b.ToTable("StageEndParameters");
+                b.ToTable("stage_end", "parameters");
             });
 
-            modelBuilder.Entity("Lab1.Models.Parameters.StageStartParameter", b =>
+            modelBuilder.Entity("Models.Parameters.StageStartParameters", b =>
             {
                 b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
 
-                b.Property<int>("Stage");
+                b.Property<int>("Stage")
+                    .HasColumnName("stage");
 
-                b.HasKey("Id");
+                b.HasKey("Id")
+                    .HasName("pk_stage_start");
 
-                b.ToTable("StageStartParameters");
+                b.ToTable("stage_start", "parameters");
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.CurrencyPurchaseEvent", b =>
+            modelBuilder.Entity("Models.Events.CurrencyPurchaseEvent", b =>
             {
-                b.HasOne("Lab1.Models.Parameters.CurrencyPurchaseParameter", "Parameters")
+                b.HasOne("Models.Parameters.CurrencyPurchaseParameters", "Parameters")
                     .WithOne("Event")
-                    .HasForeignKey("Lab1.Models.Events.CurrencyPurchaseEvent", "ParametersId");
+                    .HasForeignKey("Models.Events.CurrencyPurchaseEvent", "ParametersId")
+                    .HasConstraintName("parameters_id")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.FirstLaunchEvent", b =>
+            modelBuilder.Entity("Models.Events.FirstLaunchEvent", b =>
             {
-                b.HasOne("Lab1.Models.Parameters.FirstLaunchParameter", "Parameters")
+                b.HasOne("Models.Parameters.FirstLaunchParameters", "Parameters")
                     .WithOne("Event")
-                    .HasForeignKey("Lab1.Models.Events.FirstLaunchEvent", "ParametersId");
+                    .HasForeignKey("Models.Events.FirstLaunchEvent", "ParametersId")
+                    .HasConstraintName("parameters_id")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.InGamePurchaseEvent", b =>
+            modelBuilder.Entity("Models.Events.InGamePurchaseEvent", b =>
             {
-                b.HasOne("Lab1.Models.Parameters.InGamePurchaseParameter", "Parameters")
+                b.HasOne("Models.Parameters.InGamePurchaseParameters", "Parameters")
                     .WithOne("Event")
-                    .HasForeignKey("Lab1.Models.Events.InGamePurchaseEvent", "ParametersId");
+                    .HasForeignKey("Models.Events.InGamePurchaseEvent", "ParametersId")
+                    .HasConstraintName("parameters_id")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.StageEndEvent", b =>
+            modelBuilder.Entity("Models.Events.StageEndEvent", b =>
             {
-                b.HasOne("Lab1.Models.Parameters.StageEndParameter", "Parameters")
+                b.HasOne("Models.Parameters.StageEndParameters", "Parameters")
                     .WithOne("Event")
-                    .HasForeignKey("Lab1.Models.Events.StageEndEvent", "ParametersId");
+                    .HasForeignKey("Models.Events.StageEndEvent", "ParametersId")
+                    .HasConstraintName("parameters_id")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity("Lab1.Models.Events.StageStartEvent", b =>
+            modelBuilder.Entity("Models.Events.StageStartEvent", b =>
             {
-                b.HasOne("Lab1.Models.Parameters.StageStartParameter", "Parameters")
+                b.HasOne("Models.Parameters.StageStartParameters", "Parameters")
                     .WithOne("Event")
-                    .HasForeignKey("Lab1.Models.Events.StageStartEvent", "ParametersId");
+                    .HasForeignKey("Models.Events.StageStartEvent", "ParametersId")
+                    .HasConstraintName("parameters_id")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 612, 618
         }

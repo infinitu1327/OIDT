@@ -5,21 +5,15 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ImportRecords.Models;
-using Models;
+using Models.Events;
 using Models.Parameters;
-using Newtonsoft.Json;
-using CurrencyPurchaseParameter = ImportRecords.Models.Parameters.CurrencyPurchaseParameter;
-using FirstLaunchParameter = ImportRecords.Models.Parameters.FirstLaunchParameter;
-using InGamePurchaseParameter = ImportRecords.Models.Parameters.InGamePurchaseParameter;
-using StageEndParameter = ImportRecords.Models.Parameters.StageEndParameter;
-using StageStartParameter = ImportRecords.Models.Parameters.StageStartParameter;
+using Utf8Json;
 
-namespace Lab1
+namespace ImportRecords
 {
     public class Program
     {
-        private static async Task Main(string[] args)
+        private static async Task Main()
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-US");
 
@@ -30,11 +24,6 @@ namespace Lab1
         {
             var sw = new Stopwatch();
             sw.Start();
-
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            };
 
             var jsons = Directory
                 .EnumerateFiles(Directory.GetCurrentDirectory())
@@ -51,7 +40,7 @@ namespace Lab1
 
                 var eventsTasks = batch
                     .Select(async file => await File.ReadAllTextAsync(file))
-                    .Select(async file => JsonConvert.DeserializeObject<IEnumerable<JsonEvent>>(await file, settings));
+                    .Select(async file => JsonSerializer.Deserialize<IEnumerable<JsonEvent>>(await file));
 
                 var eventsIEnumerables = await Task.WhenAll(eventsTasks);
                 var events = eventsIEnumerables
@@ -66,21 +55,21 @@ namespace Lab1
                 }
 
                 await File.AppendAllLinesAsync("C:\\csv\\FirstLaunchParameters.csv",
-                    events.Where(e => e.EventId == 2).Select(e => new FirstLaunchParameter(e.Parameters).ToString()));
+                    events.Where(e => e.EventId == 2).Select(e => new FirstLaunchParameters(e.Parameters).ToString()));
 
                 await File.AppendAllLinesAsync("C:\\csv\\StageStartParameters.csv",
-                    events.Where(e => e.EventId == 3).Select(e => new StageStartParameter(e.Parameters).ToString()));
+                    events.Where(e => e.EventId == 3).Select(e => new StageStartParameters(e.Parameters).ToString()));
 
                 await File.AppendAllLinesAsync("C:\\csv\\StageEndParameters.csv",
-                    events.Where(e => e.EventId == 4).Select(e => new StageEndParameter(e.Parameters).ToString()));
+                    events.Where(e => e.EventId == 4).Select(e => new StageEndParameters(e.Parameters).ToString()));
 
                 await File.AppendAllLinesAsync("C:\\csv\\InGamePurchaseParameters.csv",
                     events.Where(e => e.EventId == 5)
-                        .Select(e => new InGamePurchaseParameter(e.Parameters).ToString()));
+                        .Select(e => new InGamePurchaseParameters(e.Parameters).ToString()));
 
                 await File.AppendAllLinesAsync("C:\\csv\\CurrencyPurchaseParameters.csv",
                     events.Where(e => e.EventId == 6)
-                        .Select(e => new CurrencyPurchaseParameter(e.Parameters).ToString()));
+                        .Select(e => new CurrencyPurchaseParameters(e.Parameters).ToString()));
 
                 await File.AppendAllLinesAsync("C:\\csv\\GameLaunchEvents.csv",
                     events.Where(e => e.EventId == 1).Select(e => e.ToString()));

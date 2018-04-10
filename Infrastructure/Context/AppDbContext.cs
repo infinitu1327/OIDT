@@ -6,11 +6,11 @@ namespace Infrastructure.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<CurrencyPurchaseParameter> CurrencyPurchaseParameters { get; set; }
-        public DbSet<FirstLaunchParameter> FirstLaunchParameters { get; set; }
-        public DbSet<InGamePurchaseParameter> InGamePurchaseParameters { get; set; }
-        public DbSet<StageStartParameter> StageStartParameters { get; set; }
-        public DbSet<StageEndParameter> StageEndParameters { get; set; }
+        public DbSet<CurrencyPurchaseParameters> CurrencyPurchaseParameters { get; set; }
+        public DbSet<FirstLaunchParameters> FirstLaunchParameters { get; set; }
+        public DbSet<InGamePurchaseParameters> InGamePurchaseParameters { get; set; }
+        public DbSet<StageStartParameters> StageStartParameters { get; set; }
+        public DbSet<StageEndParameters> StageEndParameters { get; set; }
         public DbSet<CurrencyPurchaseEvent> CurrencyPurchaseEvents { get; set; }
         public DbSet<FirstLaunchEvent> FirstLaunchEvents { get; set; }
         public DbSet<InGamePurchaseEvent> InGamePurchaseEvents { get; set; }
@@ -20,20 +20,31 @@ namespace Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CurrencyPurchaseParameter>().ToTable("CurrencyPurchase", "Parameters");
-            modelBuilder.Entity<CurrencyPurchaseEvent>().ToTable("CurrencyPurchase", "Events");
-            modelBuilder.Entity<StageStartParameter>().ToTable("StageStart", "Parameters");
-            modelBuilder.Entity<StageStartEvent>().ToTable("StageStart", "Events");
-            modelBuilder.Entity<GameLaunchEvent>().ToTable("GameLaunch", "Events");
-            modelBuilder.Entity<StageEndEvent>().ToTable("StageEnd", "Events");
-            modelBuilder.Entity<StageEndParameter>().ToTable("StageEnd", "Parameters");
-            modelBuilder.Entity<FirstLaunchEvent>().ToTable("FirstLaunch", "Events");
+            modelBuilder.Entity<CurrencyPurchaseParameters>(Configuration.Configuration
+                .ConfigureCurrencyPurchaseParameters);
+            modelBuilder.Entity<CurrencyPurchaseEvent>(Configuration.Configuration.ConfigureCurrencyPurchaseEvent);
+
+            modelBuilder.Entity<FirstLaunchParameters>(Configuration.Configuration.ConfigureFirstLaunchParameters);
+            modelBuilder.Entity<FirstLaunchEvent>(Configuration.Configuration.ConfigureFirstLaunchEvent);
+
+            modelBuilder.Entity<GameLaunchEvent>(Configuration.Configuration.ConfigureGameLaunchEvent);
+
+            modelBuilder.Entity<InGamePurchaseParameters>(Configuration.Configuration
+                .ConfigureInGamePurchaseParameters);
+            modelBuilder.Entity<InGamePurchaseEvent>(Configuration.Configuration.ConfigureInGamePurchaseEvent);
+
+            modelBuilder.Entity<StageEndParameters>(Configuration.Configuration.ConfigureStageEndParameters);
+            modelBuilder.Entity<StageEndEvent>(Configuration.Configuration.ConfigureStageEndEvent);
+
+            modelBuilder.Entity<StageStartParameters>(Configuration.Configuration.ConfigureStageStartParameters);
+            modelBuilder.Entity<StageStartEvent>(Configuration.Configuration.ConfigureStageStartEvent);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(
-                "Server=localhost;Port=5432;Database=oidt;User Id=postgres;Password = 123;CommandTimeout=60;");
+            optionsBuilder
+                .UseNpgsql(
+                    "Server=localhost;Port=5432;Database=oidt;User Id=postgres;Password = 123;CommandTimeout=60;");
         }
     }
 }
